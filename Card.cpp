@@ -105,3 +105,23 @@ std::istream & operator>>(std::istream &is, Suit &suit) {
 //   operator>=
 //   operator==
 //   operator!=
+
+Card::Card() {
+  assert(false);
+}
+
+Suit Suit_next(Suit suit) {
+  assert(false);
+}
+
+bool Card_less(const Card &a, const Card &b, Suit trump) {
+  assert(false);
+}
+
+std::ostream & operator<<(std::ostream &os, const Card &card) {
+  assert(false);
+}
+
+bool operator<(const Card &lhs, const Card &rhs) {
+  assert(false);
+}
