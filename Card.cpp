@@ -99,22 +99,80 @@ std::istream & operator>>(std::istream &is, Suit &suit) {
 // the following operator overload functions:
 //   operator<<
 //   operator>>
-//   operator<
-//   operator<=
-//   operator>
-//   operator>=
-//   operator==
-//   operator!=
+//   operator< done
+//   operator<= done
+//   operator> done
+//   operator>= done
+//   operator== done
+//   operator!= done
 
 Card::Card() {
-  assert(false);
+  rank = TWO;
+  suit = SPADES;
 }
 
-Suit Suit_next(Suit suit) {
-  assert(false);
+Card::Card(Rank rank_in, Suit suit_in) {
+  rank = rank_in;
+  suit = suit_in;
+}
+
+Rank Card::get_rank() const {
+  return rank;
+}
+
+Suit Card::get_suit(Suit trump) const {
+  if (is_left_bower(trump)) {
+        return trump; // Left Bower is also considered trump
+    }
+    return suit; // Otherwise, return the card's normal suit
+}
+
+bool Card::is_face_or_ace() const {
+    return rank == JACK || rank == QUEEN | rank == KING || rank == ACE;
+  }
+
+  //EFFECTS Returns true if card is the Jack of the trump suit
+  bool Card::is_right_bower(Suit trump) const {
+    return (suit == trump && rank == JACK);
+  }
+
+  //EFFECTS Returns true if card is the Jack of the next suit
+  bool Card::is_left_bower(Suit trump) const {
+    Suit next_suit = Suit_next(trump);
+    return (suit == next_suit && rank == JACK);
+  }
+
+  //EFFECTS Returns true if the card is a trump card.  All cards of the trump
+  // suit are trump cards.  The left bower is also a trump card.
+  bool Card::is_trump(Suit trump) const {
+    return suit == trump || is_left_bower(trump);
+  }
+
+  Suit Suit_next(Suit suit) {
+    if (suit == SPADES){
+      suit = CLUBS;
+    }
+    else if (suit == CLUBS){
+      suit = SPADES;
+    }
+    else if (suit == HEARTS){
+      suit = DIAMONDS;
+    }
+    else{
+      suit = HEARTS;
+    }
+    return suit;
 }
 
 bool Card_less(const Card &a, const Card &b, Suit trump) {
+  assert(false);
+}
+
+bool Card_less(const Card &a, const Card &b, const Card &led_card, Suit trump) {
+  assert(false);
+}
+
+std::istream & operator>>(std::istream &is, const Card &card) {
   assert(false);
 }
 
@@ -123,5 +181,22 @@ std::ostream & operator<<(std::ostream &os, const Card &card) {
 }
 
 bool operator<(const Card &lhs, const Card &rhs) {
-  assert(false);
+  return lhs < rhs;
+}
+
+bool operator==(const Card &lhs, const Card &rhs) {
+  return lhs == rhs;
+}
+
+bool operator<=(const Card &lhs, const Card &rhs) {
+  return lhs < rhs || lhs == rhs;
+}
+bool operator>(const Card &lhs, const Card &rhs) {
+  return !(lhs <= rhs);
+}
+bool operator>=(const Card &lhs, const Card &rhs) {
+  return !(lhs < rhs);
+}
+bool operator!=(const Card &lhs, const Card &rhs) {
+  return !(lhs == rhs);
 }
