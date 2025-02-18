@@ -120,6 +120,10 @@ Rank Card::get_rank() const {
   return rank;
 }
 
+ Suit Card::get_suit() const {
+  return suit;
+ }
+
 Suit Card::get_suit(Suit trump) const {
   if (is_left_bower(trump)) {
         return trump; // Left Bower is also considered trump
@@ -165,27 +169,136 @@ bool Card::is_face_or_ace() const {
 }
 
 bool Card_less(const Card &a, const Card &b, Suit trump) {
-  assert(false);
+  //Suit suitA = a.get_suit();
+  //Suit suitB = b.get_suit();
+  //Rank rankA = a.get_rank();
+  //Rank rankB = b.get_rank();
+  if (b.is_trump(trump) && !a.is_trump(trump)) {
+    return true;
+  }
+  else if (b.is_right_bower(trump)){
+    return true;
+  }
+  else if (b.is_left_bower(trump) && !a.is_right_bower(trump)){
+    return true;
+  }
+  else if (b.is_trump(trump) && a.is_trump(trump) && 
+  !a.is_left_bower(trump) && a > b) {
+      return true;
+  }
+  else if (!b.is_trump(trump) && !a.is_trump(trump)
+   && a>b) {
+    return true;
+  }
+  //else if ((!b.is_trump(trump) && !a.is_trump(trump) 
+  //&& rankA == rankB && suitB > suitA)) {
+  //  return true;
+  //}
+  else {
+    return false;
+  }
+  
+  /*else if (rankB > rankA && a.get_suit() != trump && !a.is_left_bower(trump)) {
+    return true;
+  }
+  else if (rankA == rankB && suitB > suitA){
+      return true;
+  }
+  else {
+    return false;
+  }*/
 }
 
 bool Card_less(const Card &a, const Card &b, const Card &led_card, Suit trump) {
-  assert(false);
+  Suit suitA = a.get_suit();
+  Suit suitB = b.get_suit();
+  Suit led_Suit = led_card.get_suit();
+  //Rank rankA = a.get_rank();
+  //Rank rankB = b.get_rank();
+  if (b.is_trump(trump) && !a.is_trump(trump)) {
+    return true;
+  }
+  else if (b.is_right_bower(trump)){
+    return true;
+  }
+  else if (b.is_left_bower(trump) && !a.is_right_bower(trump)){
+    return true;
+  }
+  else if (b.is_trump(trump) && a.is_trump(trump) && 
+  !a.is_left_bower(trump) && a > b) {
+      return true;
+  }
+  else if (!b.is_trump(trump) && !a.is_trump(trump) && suitB == led_Suit 
+  && suitA != led_Suit) {
+    return true;
+  }
+  else if (!b.is_trump(trump) && !a.is_trump(trump)
+   && a>b) {
+    return true;
+  }
+  //else if ((!b.is_trump(trump) && !a.is_trump(trump) 
+  //&& rankA == rankB && suitB > suitA)) {
+  //  return true;
+  //}
+  else {
+    return false;
+  }
+  
+  /*else if (rankB > rankA && a.get_suit() != trump && !a.is_left_bower(trump)) {
+    return true;
+  }
+  else if (rankA == rankB && suitB > suitA){
+      return true;
+  }
+  else {
+    return false;
+  }*/
+}
+std::istream & operator>>(std::istream &is, Card &card) {
+  string rank_str, suit_str, of;
+  is >> rank_str >> of >> suit_str;
+
+  // Convert the strings to the corresponding Rank and Suit
+  Rank rank = string_to_rank(rank_str);
+  Suit suit = string_to_suit(suit_str);
+
+  card = Card(rank, suit);  // Construct the card with the parsed rank and suit
+  return is;
 }
 
-std::istream & operator>>(std::istream &is, const Card &card) {
-  assert(false);
-}
 
 std::ostream & operator<<(std::ostream &os, const Card &card) {
-  assert(false);
+  os << card.get_rank() << " of " << card.get_suit();
+  return os;
 }
 
 bool operator<(const Card &lhs, const Card &rhs) {
-  return lhs < rhs;
+  Suit suitA = lhs.get_suit();
+  Suit suitB = rhs.get_suit();
+  Rank rankA = lhs.get_rank();
+  Rank rankB = rhs.get_rank();
+  if (suitA < suitB) {
+    return true;
+  }
+  else if (rankA < rankB) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 bool operator==(const Card &lhs, const Card &rhs) {
-  return lhs == rhs;
+  Suit suitA = lhs.get_suit();
+  Suit suitB = rhs.get_suit();
+  Rank rankA = lhs.get_rank();
+  Rank rankB = rhs.get_rank();
+  if (suitA == suitB && rankA == rankB) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 bool operator<=(const Card &lhs, const Card &rhs) {
