@@ -257,12 +257,9 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card, Suit trump) {
 std::istream & operator>>(std::istream &is, Card &card) {
   string rank_str, suit_str, of;
   is >> rank_str >> of >> suit_str;
-
-  // Convert the strings to the corresponding Rank and Suit
   Rank rank = string_to_rank(rank_str);
   Suit suit = string_to_suit(suit_str);
-
-  card = Card(rank, suit);  // Construct the card with the parsed rank and suit
+  card = Card(rank, suit); 
   return is;
 }
 
