@@ -29,7 +29,9 @@ Pack::Pack() {
   }
 
 bool Pack::empty() const {
-    if (cards == (std::array<Card, 0> cards)) { //error here
+    array<Card, 24> empty;
+    fill(empty, empty + n, 0);
+    if (cards == empty) { //error may have been fixed
         return true;
     };
 }
