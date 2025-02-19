@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include "Pack.hpp"
+#include <sstream>
 
 Pack::Pack() {
     int index = 0;
@@ -20,18 +21,37 @@ Pack::Pack() {
     int index = 0;
     std::string line;
     while (getline(pack_input, line)) {
-        std::istringstream iss(line); //error here
+        std::istringstream iss(line);
         Card c; 
-        iss >> c; //error here
+        iss >> c;
         cards[index] = c;
-        index ++ 
+        index ++;
     }
   }
 
+ Card Pack::deal_one() {
+     Card dealt = Pack.cards[next];
+     next++;
+     return dealt;
+ }
+
+void Pack::shuffle() {
+    std::array<Card, PACK_SIZE> new;
+    int half = PACK_SIZE / 2;
+    int j = 0;
+    for (int i = 0; i < half; i++) {
+        new[j] = cards[i + half];
+        new[j + 1] = cards[i];
+        j+= 2;
+    }
+    cards = new;
+    reset();
+}
+
+void Pack::reset() {
+    next = 0;
+}
+
 bool Pack::empty() const {
-    array<Card, 24> empty;
-    fill(empty, empty + n, 0);
-    if (cards == empty) { //error may have been fixed
-        return true;
-    };
+    return(next == PACK_SIZE);
 }
